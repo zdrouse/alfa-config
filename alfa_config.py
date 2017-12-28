@@ -25,22 +25,26 @@ def find_wlan():
 			return wlan_result
 		else:
 			print "\n No interfaces listed."
+			return None
 
 	else:
 		print "\n No wireless interface could be found...Exiting configuration script."
+		return None
 		exit(1)
 
 wlan = find_wlan()
 
-print "\n Bringing %s interface down..." % wlan
-os.system('ifconfig %s down' % wlan)
-print "\n Setting random MAC Address..."
-os.system('macchanger -r %s' % wlan)
-print "\n Changing country region..."
-os.system('iw reg set GY')
-print "\n Increasing interface txpower to 30..."
-os.system('iwconfig %s txpower 30' % wlan)
-print "\n Bringing %s interface up..." % wlan
-os.system('ifconfig %s up' % wlan)
-
-exit(0)
+if wlan is None:
+	exit(1)
+else:
+	print "\n Bringing %s interface down..." % wlan
+	os.system('ifconfig %s down' % wlan)
+	print "\n Setting random MAC Address..."
+	os.system('macchanger -r %s' % wlan)
+	print "\n Changing country region..."
+	os.system('iw reg set GY')
+	print "\n Increasing interface txpower to 30..."
+	os.system('iwconfig %s txpower 30' % wlan)
+	print "\n Bringing %s interface up..." % wlan
+	os.system('ifconfig %s up' % wlan)
+	exit(0)
